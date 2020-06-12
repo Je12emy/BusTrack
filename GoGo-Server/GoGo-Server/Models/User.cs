@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -26,19 +27,59 @@ namespace GoGo_Server.Models
         }
         public async Task InsertAsync() {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"INSERT INTO `User` (`idUser`,`FirstName`, `MiddleName`, `SeccondName`, `Age`, `AdvancedUser`, `Password`) VALUES (@idUser, @FirstName, @MiddleName, @SeccondName, @Age, @AdvancedUser, @Password)";
+            cmd.CommandText = @"INSERT INTO `User` (`FirstName`, `MiddleName`, `SeccondName`, `Age`, `AdvancedUser`, `Password`) VALUES (@FirstName, @MiddleName, @SeccondName, @Age, @AdvancedUser, @Password);";
             bindParams(cmd);
             await cmd.ExecuteNonQueryAsync();
             idUser = (int)cmd.LastInsertedId;
         }
+        public async Task UpdateAsync() {
+            using var cmd = Db.Connection.CreateCommand();
+            cmd.CommandText = @"UPDATE `User` SET `FirstName` = @FirstName, `MiddleName` = @MiddleName, `SeccondName` = @SeccondName, `Age` = @Age, `AdvancedUser` = @AdvancedUser, `Password` = @Password WHERE `idUser` = @idUser;";
+            bindParams(cmd);
+            bindId(cmd);
+            await cmd.ExecuteNonQueryAsync();
+            idUser = (int)cmd.LastInsertedId;
+        }
+        public async Task<User> FindOne(int id) {
+            using var cmd = Db.Connection.CreateCommand();
+            cmd.CommandText = @"SELECT `FirstName`, `MiddleName`, `SeccondName`, `Age`, `AdvancedUser` FROM `User` WHERE `idUser` = @idUser;";
+            bindId(cmd);
+            var result = await ReadAllAsync(await cmd.ExecuteReaderAsync());
+            return result.Count > 0 ? result[0] : null;   
+        }
 
-        public void bindParams(MySqlCommand cmd) {
+        public async Task<List<User>> ReadAllAsync(DbDataReader reader) {
+            var users = new List<User>();
+            using (reader)
+            {
+                while (await reader.ReadAsync()) {
+                    var user = new User(Db)
+                    {
+                        idUser = reader.GetInt32(0),
+                        FirstName = reader.GetString(1),
+                        MiddleName = reader.GetString(2),
+                        SeccondName = reader.GetString(3),
+                        Age = reader.GetInt32(4),
+                        AdvancedUser = reader.GetBoolean(5),
+                        Password = reader.GetString(6)
+                    };
+                    users.Add(user);
+                }
+                return users;
+            }
+        }
+
+        public void bindId(MySqlCommand cmd) {
             cmd.Parameters.Add(new MySqlParameter
             {
                 ParameterName = "@idUser",
                 DbType = DbType.Int32,
                 Value = idUser
             });
+        }
+
+        public void bindParams(MySqlCommand cmd) {
+           
             cmd.Parameters.Add(new MySqlParameter
             {
                 ParameterName = "@FirstName",

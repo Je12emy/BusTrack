@@ -23,5 +23,15 @@ namespace GoGo_Server.Controllers
             await body.InsertAsync();
             return new OkObjectResult(body);
         }
+        // PUT api/User/1
+        [HttpPut("{ID}")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody]User body) {
+            await Db.Connection.OpenAsync();
+            body.Db = Db;
+            
+
+        }
+
+
     }
 }
