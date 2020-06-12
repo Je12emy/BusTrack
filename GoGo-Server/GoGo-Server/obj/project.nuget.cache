@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "abSZs5HTfSf4XKw7CA3Kd2w5/L/orTxfBYPy9VMVzHYcprAUCyToLvrCNdDzd85u1i4phwW0U02p3i/ukmw0wg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\JeremyZelayaRodrigue\\source\\repos\\GoGo\\GoGo-Server\\GoGo-Server\\GoGo-Server.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\JeremyZelayaRodrigue\\.nuget\\packages\\mysqlconnector\\0.69.1\\mysqlconnector.0.69.1.nupkg.sha512",
+    "C:\\Users\\JeremyZelayaRodrigue\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
+  ],
+  "logs": []
+}
