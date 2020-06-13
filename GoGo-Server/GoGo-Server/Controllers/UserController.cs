@@ -27,9 +27,17 @@ namespace GoGo_Server.Controllers
         [HttpPut("{ID}")]
         public async Task<IActionResult> UpdateUser(int id, [FromBody]User body) {
             await Db.Connection.OpenAsync();
-            body.Db = Db;
-            
-
+            var query = new User(Db);
+            var result = await query.FindOne(id);
+            if (result == null)
+                return new NotFoundResult();
+            result.FirstName = body.FirstName;
+            result.MiddleName = body.MiddleName;
+            result.SeccondName = body.SeccondName;
+            result.Age = body.Age;
+            result.Password = body.Password;
+            await result.UpdateAsync();
+            return new OkObjectResult(result);
         }
 
 

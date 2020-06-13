@@ -38,12 +38,11 @@ namespace GoGo_Server.Models
             bindParams(cmd);
             bindId(cmd);
             await cmd.ExecuteNonQueryAsync();
-            idUser = (int)cmd.LastInsertedId;
         }
         public async Task<User> FindOne(int id) {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT `FirstName`, `MiddleName`, `SeccondName`, `Age`, `AdvancedUser` FROM `User` WHERE `idUser` = @idUser;";
-            bindId(cmd);
+            cmd.CommandText = @"SELECT `idUser`,`FirstName`, `MiddleName`, `SeccondName`, `Age`, `AdvancedUser`, `Password` FROM `User` WHERE `idUser` = @idUser;";
+            bindId(cmd, id);
             var result = await ReadAllAsync(await cmd.ExecuteReaderAsync());
             return result.Count > 0 ? result[0] : null;   
         }
@@ -69,13 +68,23 @@ namespace GoGo_Server.Models
             }
         }
 
-        public void bindId(MySqlCommand cmd) {
-            cmd.Parameters.Add(new MySqlParameter
-            {
-                ParameterName = "@idUser",
-                DbType = DbType.Int32,
-                Value = idUser
-            });
+        public void bindId(MySqlCommand cmd, int id = 0) {
+            if (id == 0) {
+                cmd.Parameters.Add(new MySqlParameter
+                {
+                    ParameterName = "@idUser",
+                    DbType = DbType.Int32,
+                    Value = idUser
+                });
+            } else
+            { 
+                cmd.Parameters.Add(new MySqlParameter
+                {
+                    ParameterName = "@idUser",
+                    DbType = DbType.Int32,
+                    Value = id
+                });
+            }
         }
 
         public void bindParams(MySqlCommand cmd) {
