@@ -46,7 +46,12 @@ namespace GoGo_Server.Models
             var result = await ReadAllAsync(await cmd.ExecuteReaderAsync());
             return result.Count > 0 ? result[0] : null;   
         }
-
+        public async Task DeleteOneAsync() {
+            using var cmd = Db.Connection.CreateCommand();
+            cmd.CommandText = @"DELETE FROM `User` WHERE `idUser` = @idUser";
+            bindId(cmd);
+            await cmd.ExecuteNonQueryAsync();
+        }
         public async Task<List<User>> ReadAllAsync(DbDataReader reader) {
             var users = new List<User>();
             using (reader)

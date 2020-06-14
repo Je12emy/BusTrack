@@ -39,7 +39,27 @@ namespace GoGo_Server.Controllers
             await result.UpdateAsync();
             return new OkObjectResult(result);
         }
-
+        // GET api/User/1
+        [HttpGet("{ID}")]
+        public async Task<IActionResult> GetProfile(int id) {
+            await Db.Connection.OpenAsync();
+            var query = new User(Db);
+            var result = await query.FindOne(id);
+            if (result is null)
+                return new NotFoundResult();
+            return new OkObjectResult(result);
+        }
+        // DELETE api/User/1
+        [HttpDelete("{ID}")]
+        public async Task<IActionResult> DeleteOne(int id) {
+            await Db.Connection.OpenAsync();
+            var query = new User(Db);
+            var result = await query.FindOne(id);
+            if (result is null)
+                return new NotFoundResult();
+            await result.DeleteOneAsync();
+            return new  OkResult();
+        }
 
     }
 }
