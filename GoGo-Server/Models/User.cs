@@ -16,6 +16,7 @@ namespace GoGo_Server.Models
         public string MiddleName { get; set; }
         public string SeccondName { get; set; }
         public int Age { get; set; }
+        public string Email { get; set; }
         public string Password {get; set;}
         public bool AdvancedUser { get; set; }
 
@@ -27,21 +28,21 @@ namespace GoGo_Server.Models
         }
         public async Task InsertAsync() {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"INSERT INTO `User` (`FirstName`, `MiddleName`, `SeccondName`, `Age`, `AdvancedUser`, `Password`) VALUES (@FirstName, @MiddleName, @SeccondName, @Age, @AdvancedUser, @Password);";
+            cmd.CommandText = @"INSERT INTO `User` (`FirstName`, `MiddleName`, `SeccondName`, `Age`, `AdvancedUser`, `Email`, `Password`) VALUES (@FirstName, @MiddleName, @SeccondName, @Age, @AdvancedUser, @Email, @Password);";
             bindParams(cmd);
             await cmd.ExecuteNonQueryAsync();
             idUser = (int)cmd.LastInsertedId;
         }
         public async Task UpdateAsync() {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"UPDATE `User` SET `FirstName` = @FirstName, `MiddleName` = @MiddleName, `SeccondName` = @SeccondName, `Age` = @Age, `AdvancedUser` = @AdvancedUser, `Password` = @Password WHERE `idUser` = @idUser;";
+            cmd.CommandText = @"UPDATE `User` SET `FirstName` = @FirstName, `MiddleName` = @MiddleName, `SeccondName` = @SeccondName, `Age` = @Age, `AdvancedUser` = @AdvancedUser, `Email` = @Password, `Password` = @Email WHERE `idUser` = @idUser;";
             bindParams(cmd);
             bindId(cmd);
             await cmd.ExecuteNonQueryAsync();
         }
         public async Task<User> FindOne(int id) {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT `idUser`,`FirstName`, `MiddleName`, `SeccondName`, `Age`, `AdvancedUser`, `Password` FROM `User` WHERE `idUser` = @idUser;";
+            cmd.CommandText = @"SELECT `idUser`,`FirstName`, `MiddleName`, `SeccondName`, `Age`, `AdvancedUser`, `Email`, `Password` FROM `User` WHERE `idUser` = @idUser;";
             bindId(cmd, id);
             var result = await ReadAllAsync(await cmd.ExecuteReaderAsync());
             return result.Count > 0 ? result[0] : null;   
@@ -65,7 +66,8 @@ namespace GoGo_Server.Models
                         SeccondName = reader.GetString(3),
                         Age = reader.GetInt32(4),
                         AdvancedUser = reader.GetBoolean(5),
-                        Password = reader.GetString(6)
+                        Email = reader.GetString(6),
+                        Password = reader.GetString(7)
                     };
                     users.Add(user);
                 }
@@ -123,6 +125,12 @@ namespace GoGo_Server.Models
                 ParameterName = "@AdvancedUser",
                 DbType = DbType.Boolean,
                 Value = AdvancedUser
+            });
+            cmd.Parameters.Add(new MySqlParameter
+            {
+                ParameterName = "@Email",
+                DbType = DbType.String,
+                Value = Email
             });
             cmd.Parameters.Add(new MySqlParameter
             {

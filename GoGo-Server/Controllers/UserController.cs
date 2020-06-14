@@ -35,6 +35,7 @@ namespace GoGo_Server.Controllers
             result.MiddleName = body.MiddleName;
             result.SeccondName = body.SeccondName;
             result.Age = body.Age;
+            result.Email = body.Email;
             result.Password = body.Password;
             await result.UpdateAsync();
             return new OkObjectResult(result);
