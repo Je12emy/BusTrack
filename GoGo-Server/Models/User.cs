@@ -20,6 +20,8 @@ namespace GoGo_Server.Models
         public string Password {get; set;}
         public bool AdvancedUser { get; set; }
 
+
+
         internal AppDb Db { get; set; }
         internal User(AppDb db) {
             Db = db;
