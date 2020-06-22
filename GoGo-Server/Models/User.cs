@@ -20,8 +20,6 @@ namespace GoGo_Server.Models
         public string Password {get; set;}
         public bool AdvancedUser { get; set; }
 
-
-
         internal AppDb Db { get; set; }
         internal User(AppDb db) {
             Db = db;
@@ -37,7 +35,7 @@ namespace GoGo_Server.Models
         }
         public async Task UpdateAsync() {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"UPDATE `User` SET `FirstName` = @FirstName, `MiddleName` = @MiddleName, `SeccondName` = @SeccondName, `Age` = @Age, `AdvancedUser` = @AdvancedUser, `Email` = @Password, `Password` = @Email WHERE `idUser` = @idUser;";
+            cmd.CommandText = @"UPDATE `User` SET `FirstName` = @FirstName, `MiddleName` = @MiddleName, `SeccondName` = @SeccondName, `Age` = @Age, `AdvancedUser` = @AdvancedUser, `Email` = @Email, `Password` = @Password WHERE `idUser` = @idUser;";
             bindParams(cmd);
             bindId(cmd);
             await cmd.ExecuteNonQueryAsync();
