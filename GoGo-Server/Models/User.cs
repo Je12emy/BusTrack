@@ -28,28 +28,28 @@ namespace GoGo_Server.Models
         }
         public async Task InsertAsync() {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"INSERT INTO `User` (`FirstName`, `MiddleName`, `SeccondName`, `Age`, `AdvancedUser`, `Email`, `Password`) VALUES (@FirstName, @MiddleName, @SeccondName, @Age, @AdvancedUser, @Email, @Password);";
+            cmd.CommandText = @"INSERT INTO `user` (`FirstName`, `MiddleName`, `SeccondName`, `Age`, `AdvancedUser`, `Email`, `Password`) VALUES (@FirstName, @MiddleName, @SeccondName, @Age, @AdvancedUser, @Email, @Password);";
             bindParams(cmd);
             await cmd.ExecuteNonQueryAsync();
             idUser = (int)cmd.LastInsertedId;
         }
         public async Task UpdateAsync() {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"UPDATE `User` SET `FirstName` = @FirstName, `MiddleName` = @MiddleName, `SeccondName` = @SeccondName, `Age` = @Age, `AdvancedUser` = @AdvancedUser, `Email` = @Email, `Password` = @Password WHERE `idUser` = @idUser;";
+            cmd.CommandText = @"UPDATE `user` SET `FirstName` = @FirstName, `MiddleName` = @MiddleName, `SeccondName` = @SeccondName, `Age` = @Age, `AdvancedUser` = @AdvancedUser, `Email` = @Email, `Password` = @Password WHERE `idUser` = @idUser;";
             bindParams(cmd);
             bindId(cmd);
             await cmd.ExecuteNonQueryAsync();
         }
         public async Task<User> FindOne(int id) {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT `idUser`,`FirstName`, `MiddleName`, `SeccondName`, `Age`, `AdvancedUser`, `Email`, `Password` FROM `User` WHERE `idUser` = @idUser;";
+            cmd.CommandText = @"SELECT `idUser`,`FirstName`, `MiddleName`, `SeccondName`, `Age`, `AdvancedUser`, `Email`, `Password` FROM `user` WHERE `idUser` = @idUser;";
             bindId(cmd, id);
             var result = await ReadAllAsync(await cmd.ExecuteReaderAsync());
             return result.Count > 0 ? result[0] : null;   
         }
         public async Task DeleteOneAsync() {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"DELETE FROM `User` WHERE `idUser` = @idUser";
+            cmd.CommandText = @"DELETE FROM `user` WHERE `idUser` = @idUser";
             bindId(cmd);
             await cmd.ExecuteNonQueryAsync();
         }

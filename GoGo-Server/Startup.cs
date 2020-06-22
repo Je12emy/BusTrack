@@ -26,8 +26,11 @@ namespace GoGo_Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string awsConnection = Environment.GetEnvironmentVariable("AWSConnectionString");
             // Register the DB
-            services.AddTransient<AppDb>(_ => new AppDb(Configuration["ConnectionStrings:DefaultConnection"]));
+            // For local development please use:
+            // services.AddTransient<AppDb>(_ => new AppDb(Configuration["ConnectionStrings:DefaultConnection"]));
+            services.AddTransient<AppDb>(_ => new AppDb(awsConnection));
             services.AddControllers();
         }
 
