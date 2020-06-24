@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>Model Code Snippet</Title>
+		</Header>
+		<Snippet>
+			<Code Language="CSharp">
+				<![CDATA[public async Task $MethodName$() {
+            using var cmd = Db.Connection.CreateCommand();
+            cmd.CommandText = @"$CommandText$";
+            bindParams(cmd);
+            await cmd.ExecuteNonQueryAsync();
+            idUser = (int)cmd.LastInsertedId;
+        }]]>
+			</Code>
+			<Declarations>
+				<Literal>
+					<ID>MethodName</ID>
+					<ToolTip>Creates a basic Task method for inserting into MySql DB</ToolTip>
+					<Default>InsertAsync</Default>
+				</Literal>
+				<Literal>
+					<ID>CommandText</ID>
+					<ToolTip>Creates a basic Task method for inserting into MySql DB</ToolTip>
+					<Default>Insert into `foo`(`bar`) values (@bar)</Default>
+				</Literal>
+			</Declarations>
+		</Snippet>
+	</CodeSnippet>
+</CodeSnippets>
