@@ -1,5 +1,4 @@
-﻿using GoGo_Server.Models;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,7 +6,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GoGo_Server.Controllers
+namespace GoGo_Server.Models
 {
     public class Parada
     {
@@ -44,7 +43,7 @@ namespace GoGo_Server.Controllers
         public async Task<Parada> FindOne(int id)
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT * FROM `paradas` WHERE `idParada` = @idParada";
+            cmd.CommandText = @"SELECT `idParada`,`nombre`, `descripcion`, `latitud`, `longitud` FROM `paradas` WHERE `idParada` = @idParada";
             bindId(cmd, id);
             var result = await ReadAllAsync(await cmd.ExecuteReaderAsync());
             return result.Count > 0 ? result[0] : null;
@@ -90,7 +89,7 @@ namespace GoGo_Server.Controllers
             {
                 cmd.Parameters.Add(new MySqlParameter
                 {
-                    ParameterName = "@idUser",
+                    ParameterName = "@idParada",
                     DbType = DbType.Int32,
                     Value = idParada
                 });
@@ -98,9 +97,9 @@ namespace GoGo_Server.Controllers
             // A id has been passed, assing said value
             else {
                 cmd.Parameters.Add(new MySqlParameter { 
-                    ParameterName = "@idUser",
+                    ParameterName = "@idParada",
                     DbType = DbType.Int32,
-                    Value = idParada
+                    Value = id
                 });
             }
         }

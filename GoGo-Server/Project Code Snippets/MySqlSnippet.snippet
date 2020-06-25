@@ -11,7 +11,7 @@
             cmd.CommandText = @"$CommandText$";
             bindParams(cmd);
             await cmd.ExecuteNonQueryAsync();
-            idUser = (int)cmd.LastInsertedId;
+            $id$ = (int)cmd.LastInsertedId;
         }]]>
 			</Code>
 			<Declarations>
