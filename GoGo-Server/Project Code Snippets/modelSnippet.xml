@@ -11,7 +11,7 @@
             cmd.CommandText = @"$CommandText$";
             bindParams(cmd);
             await cmd.ExecuteNonQueryAsync();
-            idUser = (int)cmd.LastInsertedId;
+            $idProperty$ = (int)cmd.LastInsertedId;
         }]]>
 			</Code>
 			<Declarations>
@@ -25,6 +25,11 @@
 					<ToolTip>Creates a basic Task method for inserting into MySql DB</ToolTip>
 					<Default>Insert into `foo`(`bar`) values (@bar)</Default>
 				</Literal>
+        <Literal>
+          <ID>idProperty</ID>
+          <ToolTip>Asigns the model's primary key to the last updated/inserted reccord</ToolTip>
+          <Default>fooId</Default>
+        </Literal>
 			</Declarations>
 		</Snippet>
 	</CodeSnippet>
