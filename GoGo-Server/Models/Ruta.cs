@@ -34,14 +34,14 @@ namespace GoGo_Server.Models
             using var cmd = Db.Connection.CreateCommand();
             cmd.CommandText = @"UPDATE `rutas` SET `nombre`= @nombre, `descripcion` = @descripcion WHERE `idRuta` = @idRuta;";
             bindParams(cmd);
+            bindId(cmd);
             await cmd.ExecuteNonQueryAsync();
-            idRuta = (int)cmd.LastInsertedId;
         }
 
         public async Task<Ruta> FindOne(int id)
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT `nombre`, `descripcion` FROM `paradas` WHERE `idRuta` = @idRuta;";
+            cmd.CommandText = @"SELECT `idRuta`,`nombre`, `descripcion` FROM `rutas` WHERE `idRuta` = @idRuta;";
             bindId(cmd, id);
             var result = await ReadAllAsync(await cmd.ExecuteReaderAsync());
             return result.Count > 0 ? result[0] : null;
@@ -50,7 +50,7 @@ namespace GoGo_Server.Models
         public async Task DeleteOneAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"DELETE FROM `rutas` WHERE `idRuta` = @idParada;";
+            cmd.CommandText = @"DELETE FROM `rutas` WHERE `idRuta` = @idRuta;";
             bindId(cmd);
             await cmd.ExecuteNonQueryAsync();
         }
