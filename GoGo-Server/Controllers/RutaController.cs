@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GoGo_Server.Controllers
 {
     [Route("api/[controller]")]
-    public class RutaController : Controller
+    public class RutaController : ControllerBase
     {
         public AppDb Db { get; }
         public RutaController(AppDb db) {

@@ -12,6 +12,8 @@ namespace GoGo_Server.Models
     {
         public int idRuta { get; set; }
         public int idParada { get; set; }
+        public double longitud { get; set; }
+        public double latitud { get; set; }
         internal AppDb Db { get; set; }
         internal ParadaBus(AppDb db) {
             Db = db;
@@ -26,19 +28,19 @@ namespace GoGo_Server.Models
             await cmd.ExecuteNonQueryAsync();
         }
 
-        public async Task<ParadaBus> FindOne()
+        //public async Task<ParadaBus> FindOne()
+        //{
+        //    using var cmd = Db.Connection.CreateCommand();
+        //    cmd.CommandText = @"SELECT `idRuta`, `idParada` WHERE `idRuta` = @idRuta AND `idParada` = @idParada";
+        //    bindParams(cmd);
+        //    var result = await ReadAllAsync(await cmd.ExecuteReaderAsync());
+        //    return result.Count > 0 ? result[0] : null;
+        //}
+        public async Task<List<ParadaBus>> FindRoute(int id)
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT `idRuta`, `idParada` WHERE `idRuta` = @idRuta AND `idParada` = @idParada";
-            bindParams(cmd);
-            var result = await ReadAllAsync(await cmd.ExecuteReaderAsync());
-            return result.Count > 0 ? result[0] : null;
-        }
-        public async Task<List<ParadaBus>> FindRoute()
-        {
-            using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT `idRuta`, `idParada` WHERE `idRuta` = @idRuta";
-            bindRuta(cmd);
+            cmd.CommandText = @"SELECT r.`idRuta`, p.`idParada`, p.`latitud`, p.`longitud` FROM `paradas_buses` pb, `rutas` r, `paradas` p WHERE r.`idRuta` = @r.idRuta AND r.`idRuta` = pb.`idRuta` AND p.`idParada`  = pb.`idParada`;";
+            bindRuta(cmd, id);
             var result = await ReadAllAsync(await cmd.ExecuteReaderAsync());
             return result.Count > 0 ? result : null;
         }
@@ -49,8 +51,11 @@ namespace GoGo_Server.Models
                     var parada = new ParadaBus(Db)
                     {
                         idRuta = reader.GetInt32(0),
-                        idParada = reader.GetInt32(1)
+                        idParada = reader.GetInt32(1),
+                        latitud = reader.GetDouble(2),
+                        longitud = reader.GetDouble(3)
                     };
+                    paradas.Add(parada);
                 }
                 return paradas;
             }
@@ -73,14 +78,32 @@ namespace GoGo_Server.Models
                 Value = idParada
             });
         }
-        public void bindRuta(DbCommand cmd) {
+        public void bindRuta(DbCommand cmd, int id) {
             // Adds a new MySql Parameter
             cmd.Parameters.Add(new MySqlParameter
             {
-                ParameterName = "@idRuta",
+                ParameterName = "@r.idRuta",
                 DbType = DbType.Int32,
-                Value = idRuta
+                Value = id
             });
         }
+        //public void bindJoinParams(DbCommand cmd, int idRuta, int idParada) {
+        //    // Adds a new MySql Parameter
+        //    cmd.Parameters.Add(new MySqlParameter
+        //    {
+        //        ParameterName = "@r.idRuta",
+        //        DbType = DbType.Int32,
+        //        Value = idRuta
+        //    });
+
+        //    // Adds a new MySql Parameter
+        //    cmd.Parameters.Add(new MySqlParameter
+        //    {
+        //        ParameterName = "@p.idParada",
+        //        DbType = DbType.Int32,
+        //        Value = idParada
+        //    });
+        //}
     }
 }
+
