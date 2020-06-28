@@ -42,6 +42,7 @@ namespace GoGo_Server.Controllers
         // GET api/User/1
         [HttpGet("{ID}")]
         public async Task<IActionResult> GetProfile(int id) {
+
             await Db.Connection.OpenAsync();
             var query = new User(Db);
             var result = await query.FindOne(id);

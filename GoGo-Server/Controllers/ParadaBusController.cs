@@ -20,7 +20,7 @@ namespace GoGo_Server.Controllers
             await Db.Connection.OpenAsync();
             body.Db = Db;
             await body.InsertAsync();
-            return new OkObjectResult(body);
+            return new OkObjectResult("idRuta: " + body.idRuta + '\r' + "idParada: "+body.idParada);
         }
         // GET api/ParadaBus/1
         [HttpGet("{ID}")]

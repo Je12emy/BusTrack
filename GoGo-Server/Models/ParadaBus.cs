@@ -61,7 +61,6 @@ namespace GoGo_Server.Models
             }
         }
         public void bindParams(DbCommand cmd) {
-
             // Adds a new MySql Parameter
             cmd.Parameters.Add(new MySqlParameter
             {

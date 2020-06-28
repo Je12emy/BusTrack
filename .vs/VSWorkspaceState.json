@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\GoGo-Server",
+    "\\GoGo-Server\\Controllers",
+    "\\GoGo-Server\\Models"
   ],
+  "SelectedNode": "\\GoGo-Server\\AppDb.cs",
   "PreviewInSolutionExplorer": false
 }

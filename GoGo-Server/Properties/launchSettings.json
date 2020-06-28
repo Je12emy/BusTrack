@@ -11,6 +11,7 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
+      "launchBrowser": true,
       "launchUrl": "weatherforecast",
       "environmentVariables": {
         "AWSConnectionString": "server=gogo-database.co0n2vhu3oim.us-east-1.rds.amazonaws.com;user id=GoGoAdmin;password=sG02p^*04sog;port=3306;database=GoGo;",
