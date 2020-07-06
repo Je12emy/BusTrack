@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30128.74
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoGo-Server", "GoGo-Server\GoGo-Server.csproj", "{F26E3C93-2BA2-413F-9F01-ACA399837B2F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoGo App", "GoGo App\GoGo App.csproj", "{20B39386-CCC8-4854-A9D8-D24547DA55AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,12 @@ Global
 		{F26E3C93-2BA2-413F-9F01-ACA399837B2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F26E3C93-2BA2-413F-9F01-ACA399837B2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F26E3C93-2BA2-413F-9F01-ACA399837B2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20B39386-CCC8-4854-A9D8-D24547DA55AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20B39386-CCC8-4854-A9D8-D24547DA55AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20B39386-CCC8-4854-A9D8-D24547DA55AA}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{20B39386-CCC8-4854-A9D8-D24547DA55AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20B39386-CCC8-4854-A9D8-D24547DA55AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20B39386-CCC8-4854-A9D8-D24547DA55AA}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
