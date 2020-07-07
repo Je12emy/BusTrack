@@ -12,75 +12,83 @@ using Android.Views;
 using Android.Widget;
 using Java.Lang;
 using Xamarin.Essentials;
+using AlertDialog = Android.App.AlertDialog;
 
 namespace GoGo_App
 {
     [Activity(Label = "@string/app_name", MainLauncher = true)]
     public class MainActivity : AppCompatActivity, IOnMapReadyCallback
     {
-        private GoogleMap mMap;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             // Initialize Xamarin Essentials for the Geolocation Service
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
-
-            var mapFragment = (SupportMapFragment)SupportFragmentManager.FindFragmentById(Resource.Id.gmap);
-            //var mapFragment = (MapFragment) FragmentManager.FindFragmentById(Resource.Id.gmap);
-            
+            // Capture the Map Fragment
+            var mapFragment = (SupportMapFragment)SupportFragmentManager.FindFragmentById(Resource.Id.gmap);  
             mapFragment.GetMapAsync(this);
-
-            //Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
-            //SetSupportActionBar(toolbar);
-
-            //FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
-            //fab.Click += FabOnClick;
         }
+
 
         public void OnMapReady(GoogleMap map)
         {
-            // Do something with the map, i.e. add markers, move to a specific location, etc.
             // Set up a normal map
             map.MapType = GoogleMap.MapTypeNormal;
             // Map settings
             map.UiSettings.ZoomControlsEnabled = true;
             map.UiSettings.CompassEnabled = true;
-
-            // ****** Usar los siguientes metodos para centrar el mapa en la localizacion del usuario y markar su posicion ****
+            // Find user's location
             var location = FindMe();
-            var _location = new LatLng(location.Result.Latitude, location.Result.Longitude);
-            if (location != null) 
+            // If a location is provided
+            if (location != null)
+            { 
+                // From the Task result, create a new LatLng object
+                var _location = new LatLng(location.Result.Latitude, location.Result.Longitude);
                 setStarterPosition(_location, map);
-            // Manage location errors with else statement! ***
+                // Display user real time location
+                map.MyLocationEnabled = true;
+            }
+            
         }
         private async Task<Location> FindMe() {
             try
             {
+                // Check for the permission
+                var permissions = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+                // If the permission is not hranted
+                if (permissions != PermissionStatus.Granted) {
+                    // Request it again
+                    permissions = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+                }
+                // When permision is not granted at all this conditional seems to not be executed
+                if (permissions != PermissionStatus.Granted)
+                {
+                    return null;
+                }
+
+
                 // Return the last cached known location
                 var location = await Geolocation.GetLastKnownLocationAsync();
                 // If not null
                 if (location != null)
                 {
-                    // Return it
-                    //Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
+                    // Return it the cached location
                     return location;
                 }
-                else {
-                    // Request the current location
-                    location = await Geolocation.GetLocationAsync(new GeolocationRequest
-                    {
-                        DesiredAccuracy = GeolocationAccuracy.Low,
-                        Timeout = TimeSpan.FromSeconds(30)
-                    });
-                }
-                return null;
+                location = await Geolocation.GetLocationAsync(new GeolocationRequest
+                {
+                    DesiredAccuracy = GeolocationAccuracy.Low,
+                    Timeout = TimeSpan.FromSeconds(30)
+                });
+                return location;
+                
             }
             catch (Error e) {
                 Console.WriteLine("Error" + e);
                 return null;
             }
-            // Expand on other catch statements ****
+            // Expand on catch statements ****
             //catch (FeatureNotSupportedException fnsEx)
             //{
             //    // Handle not supported on device exception
@@ -92,6 +100,7 @@ namespace GoGo_App
             //catch (PermissionException pEx)
             //{
             //    // Handle permission exception
+               
             //}
             //catch (Exception ex)
             //{
@@ -104,16 +113,12 @@ namespace GoGo_App
             CameraPosition.Builder builder = CameraPosition.InvokeBuilder();
             builder.Target(_location);
             builder.Zoom(18);
-
             CameraPosition cameraPosition = builder.Build();
-
             CameraUpdate cameraUpdate = CameraUpdateFactory.NewCameraPosition(cameraPosition);
             MarkerOptions markerOpt1 = new MarkerOptions();
+            
             markerOpt1.SetPosition(_location);
-            //markerOpt1.SetTitle("Vimy Ridge");
-
             map.AddMarker(markerOpt1);
-
             map.MoveCamera(cameraUpdate);
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
