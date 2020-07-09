@@ -101,6 +101,9 @@
     <Folder Include="Fragments\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Refractored.Controls.CircleImageView">
+      <Version>1.0.1</Version>
+    </PackageReference>
     <PackageReference Include="System.Net.Http">
       <Version>4.3.4</Version>
     </PackageReference>
