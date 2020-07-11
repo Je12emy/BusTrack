@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:src="@drawable/pic_bus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_marginTop="-11dp"
+        android:id="@+id/imageView1" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout3"
+        android:layout_marginTop="20dp">
+        <ImageView
+        android:contentDescription="Name Icon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/ic_email_black_18dp"
+        android:layout_marginLeft="80dp"/>
+        <TextView
+        android:textAlignment="center"
+        android:text="Correo Electronico"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView1" 
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"/>
+        </LinearLayout>
+        <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_nombre"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"/>
+        <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout4"
+        android:layout_marginTop="20dp">
+        <ImageView
+        android:contentDescription="Name Icon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/ic_vpn_key_grey_black_1000_18dp"
+        android:layout_marginLeft="80dp"/>
+        <TextView
+        android:textAlignment="center"
+        android:text="Contraseña"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView1" 
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"/>
+        </LinearLayout>
+        <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_contraseña"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"/>
+    <Button
+        android:layout_marginTop="16dp"
+        android:text="Ingresar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"/>
+   
+</LinearLayout>

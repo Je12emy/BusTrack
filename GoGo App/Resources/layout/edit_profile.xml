@@ -99,14 +99,16 @@
         android:text="Cambiar Contraseña"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button1" 
+        android:id="@+id/button1"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"/>
-       <Button
+        android:layout_marginRight="8dp"
+        android:enabled="false" />
+    <Button
         android:text="Realizar Cambios"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button1" 
+        android:id="@+id/button2"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"/>
+        android:layout_marginRight="8dp"
+        android:textStyle="normal" />
 </LinearLayout>
