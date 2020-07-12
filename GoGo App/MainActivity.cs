@@ -17,39 +17,63 @@ using Java.Lang;
 using Xamarin.Essentials;
 using AlertDialog = Android.App.AlertDialog;
 using GoGo_App.Activities.Utils;
+using GoGo_App.Fragments;
 
 namespace GoGo_App
 {
     [Activity(Label = "@string/app_name", MainLauncher = true)]
-    public class MainActivity : AppCompatActivity, IOnMapReadyCallback
+    public class MainActivity : AppCompatActivity
     {
-        private GoogleMap map;
+        BottomNavigationView bottomNavigation;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             // Initialize Xamarin Essentials for the Geolocation Service
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            SetContentView(Resource.Layout.activity_main);
-            // Capture the Map Fragment
-            var mapFragment = (SupportMapFragment)SupportFragmentManager.FindFragmentById(Resource.Id.gmap);  
-            mapFragment.GetMapAsync(this);
-            //GetDirections();
+            SetContentView(Resource.Layout.main_frame);
+            //var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
+            //if (toolbar != null)
+            //{
+            //    SetSupportActionBar(toolbar);
+            //    SupportActionBar.SetDisplayHomeAsUpEnabled(false);
+            //    SupportActionBar.SetHomeButtonEnabled(false);
+            //}
+
+            bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
+
+            bottomNavigation.NavigationItemSelected += BottomNavigation_NavigationItemSelected;
+
+            // Load the first fragment on creation
+            LoadFragment(Resource.Id.profile_view);
+
         }
 
-
-        public void OnMapReady(GoogleMap _map)
+        private void BottomNavigation_NavigationItemSelected(object sender, BottomNavigationView.NavigationItemSelectedEventArgs e)
         {
-            this.map = _map;
-            MapHelper mapHelper = new MapHelper(map);
-            mapHelper.SetUpMap();
+            LoadFragment(e.Item.ItemId);
         }
 
-        private async void GetDirections() {
-            using var client = new HttpClient();
-            var result = await client.GetAsync("https://maps.googleapis.com/maps/api/directions/json?origin=Toronto&destination=Montreal&key=AIzaSyBVTPYtbnM0nfQCXcngz3ie8F-IF5imM0w");
-            var body = await result.Content.ReadAsStringAsync();
+        void LoadFragment(int id)
+        {
+            Android.Support.V4.App.Fragment fragment = null;
+            switch (id)
+            {
+                case Resource.Id.profile_view:
+                    fragment = profile_fragment.NewInstance();
+                    break;
+                case Resource.Id.map_view:
+                    fragment = map_fragment.NewInstance();
+                    break;
+            }
+
+            if (fragment == null)
+                return;
+
+            SupportFragmentManager.BeginTransaction()
+                .Replace(Resource.Id.content_frame, fragment)
+                .Commit();
         }
-       
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
