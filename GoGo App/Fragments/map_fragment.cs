@@ -34,7 +34,7 @@ namespace GoGo_App.Fragments
         {
             base.OnActivityCreated(savedInstanceState);
             // Capture the Map Fragment
-            SupportMapFragment mapFragment = Activity.SupportFragmentManager.FindFragmentById(Resource.Id.gmap).JavaCast<SupportMapFragment>();
+            SupportMapFragment mapFragment = ChildFragmentManager.FindFragmentById(Resource.Id.gmap).JavaCast<SupportMapFragment>();
             if (mapFragment == null)
             {
                 mapFragment = SupportMapFragment.NewInstance();
