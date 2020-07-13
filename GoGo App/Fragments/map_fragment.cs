@@ -21,7 +21,7 @@ namespace GoGo_App.Fragments
     public class map_fragment : Android.Support.V4.App.Fragment, IOnMapReadyCallback
     {
         private GoogleMap map;
-        private FragmentActivity myContext;
+        //private FragmentActivity myContext;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -45,10 +45,9 @@ namespace GoGo_App.Fragments
             base.OnCreateView(inflater, container, savedInstanceState);
             
             View view = inflater.Inflate(Resource.Layout.activity_main, container, false);
-            var mapFragment = (SupportMapFragment)SupportFragmentManager.FindFragmentById(Resource.Id.gmap);
-            //var mapFragment = (SupportMapFragment)FragmentManager.FindFragmentById(Resource.Id.gmap);
-            mapFragment.GetMapAsync(this);
-            
+            //SupportMapFragment mapFragment = Activity.SupportFragmentManager.FindFragmentById(Resource.Id.gmap).JavaCast<SupportMapFragment>();
+            //mapFragment.GetMapAsync(this);
+            //var mapFragment = (SupportMapFragment)FragmentManager.FindFragmentById(Resource.Id.gmap);            
             return view;
         }
         public void OnMapReady(GoogleMap _map)
