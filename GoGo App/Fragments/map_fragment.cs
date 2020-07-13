@@ -45,9 +45,9 @@ namespace GoGo_App.Fragments
             base.OnCreateView(inflater, container, savedInstanceState);
             
             View view = inflater.Inflate(Resource.Layout.activity_main, container, false);
-            //SupportMapFragment mapFragment = Activity.SupportFragmentManager.FindFragmentById(Resource.Id.gmap).JavaCast<SupportMapFragment>();
-            //mapFragment.GetMapAsync(this);
             //var mapFragment = (SupportMapFragment)FragmentManager.FindFragmentById(Resource.Id.gmap);            
+            MapFragment mapFragment = Activity.SupportFragmentManager.FindFragmentById(Resource.Id.gmap).JavaCast<MapFragment>();
+            mapFragment.GetMapAsync(this);
             return view;
         }
         public void OnMapReady(GoogleMap _map)
