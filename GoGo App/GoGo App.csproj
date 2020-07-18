@@ -66,6 +66,8 @@
     <Compile Include="Fragments\map_fragment.cs" />
     <Compile Include="Fragments\profile_fragment.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Models\Ruta.cs" />
+    <Compile Include="Models\Utils\RutaAdapter.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -105,6 +107,9 @@
   <ItemGroup>
     <PackageReference Include="Refractored.Controls.CircleImageView">
       <Version>1.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="RestSharp">
+      <Version>106.11.4</Version>
     </PackageReference>
     <PackageReference Include="System.Net.Http">
       <Version>4.3.4</Version>

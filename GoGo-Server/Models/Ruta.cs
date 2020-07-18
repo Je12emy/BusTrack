@@ -46,6 +46,13 @@ namespace GoGo_Server.Models
             var result = await ReadAllAsync(await cmd.ExecuteReaderAsync());
             return result.Count > 0 ? result[0] : null;
         }
+        public async Task<List<Ruta>> FindAllRutas() {
+            using var cmd = Db.Connection.CreateCommand();
+            cmd.CommandText = @"SELECT `idRuta`,`nombre`,`descripcion` FROM `rutas`;";
+            bindParams(cmd);
+            var result = await ReadAllAsync(await cmd.ExecuteReaderAsync());
+            return result.Count > 0 ? result : null;
+        }
 
         public async Task DeleteOneAsync()
         {
@@ -70,6 +77,7 @@ namespace GoGo_Server.Models
                 return rutas;
             }
         }
+
         public void bindId(MySqlCommand cmd, int id = 0) {
             if (id == 0)
             {
