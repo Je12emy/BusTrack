@@ -22,7 +22,7 @@ namespace GoGo_Server.Controllers
             await body.InsertAsync();
             return new OkObjectResult(body);
         }
-        // PUT api/Parada/1
+        // PUT api/Ruta/1
         [HttpPut("{ID}")]
         public async Task<IActionResult> UpdateParada(int id, [FromBody]Ruta body)
         {
@@ -36,7 +36,17 @@ namespace GoGo_Server.Controllers
             await result.UpdateAsync();
             return new OkObjectResult(result);
         }
-        // GET api/Parada/1
+        // Get api/Ruta
+        [HttpGet]
+        public async Task<IActionResult> GetRutas() {
+            await Db.Connection.OpenAsync();
+            var query = new Ruta(Db);
+            var result = await query.FindAllRutas();
+            if (result is null)
+                return new NotFoundResult();
+            return new OkObjectResult(result);
+        }
+        // GET api/Ruta
         [HttpGet("{ID}")]
         public async Task<IActionResult> GetRuta(int id) {
             await Db.Connection.OpenAsync();
@@ -46,7 +56,7 @@ namespace GoGo_Server.Controllers
                 return new NotFoundResult();
             return new OkObjectResult(result);
         }
-        // DELETE api/Parada/1
+        // DELETE api/Ruta/1
         [HttpDelete("{ID}")]
         public async Task<IActionResult> DeleteOne(int id) {
             await Db.Connection.OpenAsync();
