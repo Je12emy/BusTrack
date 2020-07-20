@@ -81,19 +81,19 @@ namespace GoGo_App.Fragments
         private void _listView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             var select = rutas[e.Position].idRuta;
-            Console.WriteLine(select);
-            Toast.MakeText((Activity)Context, select.ToString(), ToastLength.Long).Show();
+            //Console.WriteLine(select);
+            //Toast.MakeText((Activity)Context, select.ToString(), ToastLength.Long).Show();
+            // GET RutaParada/{id}
+            var client = new RestClient("http://10.0.2.2/GoGo-Server/api/");
+            var request = new RestRequest("ParadaBus/{id}", DataFormat.Json)
+                .AddUrlSegment("id", select);
+            var response = client.Get(request);
+            Console.WriteLine(response.Content);
         }
         private void _searchView_QueryTextChange(object sender, SearchView.QueryTextChangeEventArgs e) {
             rutaAdapter.Filter.InvokeFilter(e.NewText);
         }
         public List<Ruta> addData() {
-            // https://localhost:44392/api/Ruta
-            // https://localhost:44392/
-            // http://10.0.2.2:51811
-            //var client = new RestClient("http://10.0.2.2:51811/");
-            //var request = new RestRequest("WeatherForecast", Method.GET);
-            //Ruta _ruta = new Ruta();
             var client = new RestClient("http://10.0.2.2/GoGo-Server/api/");
             var request = new RestRequest("Ruta");   
             request.AddHeader("Content-Type", "application/json; charset=utf-8");
