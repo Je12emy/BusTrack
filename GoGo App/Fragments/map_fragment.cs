@@ -41,8 +41,6 @@ namespace GoGo_App.Fragments
         {
             base.OnCreate(savedInstanceState);
             // Create your fragment here       
-       
-
         }
         public override void OnActivityCreated(Bundle savedInstanceState)
         {
@@ -77,6 +75,7 @@ namespace GoGo_App.Fragments
             rutaAdapter = new RutaAdapter((Activity)Context, rutas);
             _listView.Adapter = rutaAdapter;
             _listView.ItemClick += _listView_ItemClick;
+            _seachView.QueryTextChange += _searchView_QueryTextChange;
             return view;
         }
         private void _listView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -84,6 +83,9 @@ namespace GoGo_App.Fragments
             var select = rutas[e.Position].idRuta;
             Console.WriteLine(select);
             Toast.MakeText((Activity)Context, select.ToString(), ToastLength.Long).Show();
+        }
+        private void _searchView_QueryTextChange(object sender, SearchView.QueryTextChangeEventArgs e) {
+            rutaAdapter.Filter.InvokeFilter(e.NewText);
         }
         public List<Ruta> addData() {
             // https://localhost:44392/api/Ruta

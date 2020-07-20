@@ -22,7 +22,7 @@ namespace GoGo_App.Models
         public Ruta Ruta;
     }
     
-    public class Ruta
+    public class Ruta: Java.Lang.Object
     {
         public int idRuta { get; set; }
         public string nombre { get; set; }

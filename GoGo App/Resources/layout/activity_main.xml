@@ -12,7 +12,7 @@
         android:queryHint="Quiero ir a ... "/>
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:id="@+id/searchList"
         android:minHeight="25px"/>
     <fragment
