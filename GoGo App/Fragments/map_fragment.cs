@@ -92,7 +92,7 @@ namespace GoGo_App.Fragments
             var d = JsonConvert.DeserializeObject<List<RutaParada>>(response.Content);
             MapHelper mapHelper = new MapHelper(map);
             
-            LatLng origin = new LatLng(d[1].latitud, d[1].longitud);
+            LatLng origin = new LatLng(d[0].latitud, d[0].longitud);
             
             LatLng destination = new LatLng(d[d.Count-1].latitud, d[d.Count-1].longitud);
             string json;
