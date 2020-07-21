@@ -135,11 +135,11 @@ namespace GoGo_App.Activities.Utils
             // Origin of Route
             string str_origin = "origin=" + location.Latitude + "," + location.Longitude;
             // Destinatin of route
-            string str_destination = "destination=" + destination.Longitude + "," + destination.Latitude;
+            string str_destination = "destination=" + destination.Latitude + "," + destination.Longitude;
             //mode
             string mode = "mode=driving";
             // Building the parameters
-            string parameters = test_origin + "&" + test_destination + "&" + "&" + mode + "&key=";
+            string parameters = str_origin + "&" + str_destination + "&" + "&" + mode + "&key=";
             // Output Format
             string output = "json";
             string key = "AIzaSyBVTPYtbnM0nfQCXcngz3ie8F-IF5imM0w";
