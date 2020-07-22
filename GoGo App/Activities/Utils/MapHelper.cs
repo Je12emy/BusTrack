@@ -15,6 +15,12 @@ using Android.Gms.Maps.Model;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Java.Lang;
+using System.Net.Http;
+using Newtonsoft.Json;
+using Com.Google.Maps.Android;
+using Java.Util;
+using Android.Graphics;
+using GoGo_App.Models;
 
 namespace GoGo_App.Activities.Utils
 {
@@ -98,7 +104,71 @@ namespace GoGo_App.Activities.Utils
             //map.AddMarker(markerOpt1);
             map.MoveCamera(cameraUpdate);
         }
-        public void DrawPolyLines() { 
+        public void DrawPolyLines(string json) {
+            var directionData = JsonConvert.DeserializeObject<DirectionParser>(json);
+
+            // Decode Encoded Route
+            var points = directionData.routes[0].overview_polyline.points;
+            var line = PolyUtil.Decode(points);
+
+            ArrayList routeList = new ArrayList();
+            foreach (LatLng item in line) 
+            {
+                routeList.Add(item);
+            }
+            // Draw on map
+            PolylineOptions polylineOptions = new PolylineOptions()
+                .AddAll(routeList)
+                .InvokeWidth(10)
+                .InvokeColor(Color.Teal)
+                .InvokeStartCap(new SquareCap())
+                .InvokeEndCap(new SquareCap())
+                .InvokeJointType(JointType.Round)
+                .Geodesic(true);
+
+            Android.Gms.Maps.Model.Polyline mPolyline = map.AddPolyline(polylineOptions);
+
+        }
+        public async Task<string> setDirectionJsonAsync(LatLng location, LatLng destination, List<LatLng> lwaypoints)
+        {
+            string test_origin = "origin=9.965921, -84.063264";
+            string test_destination = "destination=9.964217, -84.062787";
+            // Origin of Route
+            string str_origin = "origin=" + location.Latitude + "," + location.Longitude;
+            // Destinatin of route
+            string str_destination = "destination=" + destination.Latitude + "," + destination.Longitude;
+            //mode
+            string mode = "mode=driving";
+            // waypoints
+            string waypoints = "waypoints=";
+            foreach (LatLng _waypoint in lwaypoints) {
+                waypoints = waypoints + _waypoint.Latitude.ToString() + "," + _waypoint.Longitude.ToString() + "|";
+            }
+            // Building the parameters
+            string parameters = str_origin + "&" + str_destination + "&" + waypoints +"&" + mode + "&key=";
+            // Output Format
+            string output = "json";
+            string key = "AIzaSyBVTPYtbnM0nfQCXcngz3ie8F-IF5imM0w";
+            // Building the final url string
+            string url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + key;
+            string json = "";
+            json = await GetGeoJsonAsync(url);
+            return json;
+        }
+        public async Task<string> GetGeoJsonAsync(string url)
+        {
+            var handler = new HttpClientHandler();
+            HttpClient client = new HttpClient(handler);
+            string result = await client.GetStringAsync(url);
+            return result;
+        }
+        public void AddMarkers(List<RutaParada> Paradas) {
+            foreach (RutaParada parada in Paradas) 
+            {
+                MarkerOptions marker = new MarkerOptions();
+                marker.SetPosition(new LatLng(parada.latitud, parada.longitud));
+                map.AddMarker(marker);
+            }
         }
     }
 }

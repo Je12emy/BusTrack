@@ -19,10 +19,13 @@ using Java.Util;
 using Android.Support.V7.RecyclerView.Extensions;
 using Android.Provider;
 using RestSharp;
+using RestSharp.Deserializers;
 using System.Threading.Tasks;
 using Android.Graphics;
 using GoGo_App.Models;
 using GoGo_App.Models.Utils;
+using Android.Gms.Maps.Model;
+using Newtonsoft.Json;
 
 namespace GoGo_App.Fragments
 {
@@ -78,22 +81,38 @@ namespace GoGo_App.Fragments
             _seachView.QueryTextChange += _searchView_QueryTextChange;
             return view;
         }
-        private void _listView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        private async void _listView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             var select = rutas[e.Position].idRuta;
-            Console.WriteLine(select);
-            Toast.MakeText((Activity)Context, select.ToString(), ToastLength.Long).Show();
+            var client = new RestClient("http://10.0.2.2/GoGo-Server/api/");
+            var request = new RestRequest("ParadaBus/{id}", DataFormat.Json)
+                .AddUrlSegment("id", select);
+
+            var response = client.Get(request);
+            var d = JsonConvert.DeserializeObject<List<RutaParada>>(response.Content);
+            MapHelper mapHelper = new MapHelper(map);
+            
+            LatLng origin = new LatLng(d[0].latitud, d[0].longitud);
+            
+            LatLng destination = new LatLng(d[d.Count-1].latitud, d[d.Count-1].longitud);
+            string json;
+            List<LatLng> waypoints = new List<LatLng>();
+            var rango = d.GetRange(1, d.Count - 2);
+            foreach (RutaParada item in rango) 
+            {
+                waypoints.Add(new LatLng(item.latitud, item.longitud));
+            }
+            json = await mapHelper.setDirectionJsonAsync(origin, destination, waypoints);
+            if (!string.IsNullOrEmpty(json))
+            {
+                mapHelper.DrawPolyLines(json);
+            }
+            mapHelper.AddMarkers(d);
         }
         private void _searchView_QueryTextChange(object sender, SearchView.QueryTextChangeEventArgs e) {
             rutaAdapter.Filter.InvokeFilter(e.NewText);
         }
         public List<Ruta> addData() {
-            // https://localhost:44392/api/Ruta
-            // https://localhost:44392/
-            // http://10.0.2.2:51811
-            //var client = new RestClient("http://10.0.2.2:51811/");
-            //var request = new RestRequest("WeatherForecast", Method.GET);
-            //Ruta _ruta = new Ruta();
             var client = new RestClient("http://10.0.2.2/GoGo-Server/api/");
             var request = new RestRequest("Ruta");   
             request.AddHeader("Content-Type", "application/json; charset=utf-8");
@@ -107,12 +126,6 @@ namespace GoGo_App.Fragments
                 mapHelper.SetUpMap();           
         }
 
-        private async void GetDirections()
-        {
-            using var client = new HttpClient();
-            var result = await client.GetAsync("https://maps.googleapis.com/maps/api/directions/json?origin=Toronto&destination=Montreal&key=AIzaSyBVTPYtbnM0nfQCXcngz3ie8F-IF5imM0w");
-            var body = await result.Content.ReadAsStringAsync();
-        }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
