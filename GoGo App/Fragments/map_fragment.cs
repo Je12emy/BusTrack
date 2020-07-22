@@ -96,11 +96,18 @@ namespace GoGo_App.Fragments
             
             LatLng destination = new LatLng(d[d.Count-1].latitud, d[d.Count-1].longitud);
             string json;
-            json = await mapHelper.setDirectionJsonAsync(origin, destination);
+            List<LatLng> waypoints = new List<LatLng>();
+            var rango = d.GetRange(1, d.Count - 2);
+            foreach (RutaParada item in rango) 
+            {
+                waypoints.Add(new LatLng(item.latitud, item.longitud));
+            }
+            json = await mapHelper.setDirectionJsonAsync(origin, destination, waypoints);
             if (!string.IsNullOrEmpty(json))
             {
                 mapHelper.DrawPolyLines(json);
             }
+            mapHelper.AddMarkers(d);
         }
         private void _searchView_QueryTextChange(object sender, SearchView.QueryTextChangeEventArgs e) {
             rutaAdapter.Filter.InvokeFilter(e.NewText);

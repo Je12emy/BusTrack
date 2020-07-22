@@ -20,6 +20,7 @@ using Newtonsoft.Json;
 using Com.Google.Maps.Android;
 using Java.Util;
 using Android.Graphics;
+using GoGo_App.Models;
 
 namespace GoGo_App.Activities.Utils
 {
@@ -128,7 +129,7 @@ namespace GoGo_App.Activities.Utils
             Android.Gms.Maps.Model.Polyline mPolyline = map.AddPolyline(polylineOptions);
 
         }
-        public async Task<string> setDirectionJsonAsync(LatLng location, LatLng destination)
+        public async Task<string> setDirectionJsonAsync(LatLng location, LatLng destination, List<LatLng> lwaypoints)
         {
             string test_origin = "origin=9.965921, -84.063264";
             string test_destination = "destination=9.964217, -84.062787";
@@ -138,8 +139,13 @@ namespace GoGo_App.Activities.Utils
             string str_destination = "destination=" + destination.Latitude + "," + destination.Longitude;
             //mode
             string mode = "mode=driving";
+            // waypoints
+            string waypoints = "waypoints=";
+            foreach (LatLng _waypoint in lwaypoints) {
+                waypoints = waypoints + _waypoint.Latitude.ToString() + "," + _waypoint.Longitude.ToString() + "|";
+            }
             // Building the parameters
-            string parameters = str_origin + "&" + str_destination + "&" + "&" + mode + "&key=";
+            string parameters = str_origin + "&" + str_destination + "&" + waypoints +"&" + mode + "&key=";
             // Output Format
             string output = "json";
             string key = "AIzaSyBVTPYtbnM0nfQCXcngz3ie8F-IF5imM0w";
@@ -155,6 +161,14 @@ namespace GoGo_App.Activities.Utils
             HttpClient client = new HttpClient(handler);
             string result = await client.GetStringAsync(url);
             return result;
+        }
+        public void AddMarkers(List<RutaParada> Paradas) {
+            foreach (RutaParada parada in Paradas) 
+            {
+                MarkerOptions marker = new MarkerOptions();
+                marker.SetPosition(new LatLng(parada.latitud, parada.longitud));
+                map.AddMarker(marker);
+            }
         }
     }
 }
