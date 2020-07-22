@@ -2,7 +2,7 @@
 
 GoGo is a mobile application developed using [Xamarin.Android](https://docs.microsoft.com/en-us/xamarin/android/) which aims to solve a need to improve knowledge around Costa Rica’s public transportation by working as a central repository of knowledge about bus routes in Costa Rica. This is achieved by allowing a special kind of users register, update o delete bus routes and their bus stops.
 
-![image-20200722003720645](C:\Users\JeremyZelayaRodrigue\AppData\Roaming\Typora\typora-user-images\image-20200722003720645.png)
+![image-20200722005200587](readme-images/image-20200722005200587.png)
 
 ## Context
 
